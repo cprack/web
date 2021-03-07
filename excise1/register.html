@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>校园网注册</title>
+</head>
+
+<body>
+<form method="get" style="text-align: center;font-size: 20px">
+    <fieldset>
+        <legend>校园网注册</legend>
+        <div style="padding-top:30px;">
+            <div style="width: 45%;float:left;text-align: right">
+                <span>用户名:</span>
+            </div>
+            <div style="padding-left:20px;width: 50%;float:left;text-align: left">
+                <input style="height: 25px" autocomplete="off" onchange="check('userName')" onclick="input('userName')" type="text" id="userName" placeholder="请输入用户名">
+                <span id="userNameCheckOk" style="color: rgba(26,245,19,0.79)"></span>
+            </div>
+            <div style="float: left;text-align: center;width: 100%;font-size: 12px">
+                <span id="userNameCheckNo" style="color:red"></span>
+            </div>
+        </div>
+        </br>
+        <div style="padding-top:30px;">
+            <div style="width: 45%;float:left;text-align: right">
+                <span>邮箱:</span>
+            </div>
+            <div style="padding-left:20px;width: 50%;float:left;text-align: left">
+                <input style="height: 25px" autocomplete="off" onchange="check('email')" onclick="input('email')" type="text" id="email" placeholder="请输入邮箱">
+                <span id="emailCheckOk" style="color: rgba(26,245,19,0.79)"></span>
+            </div>
+            <div style="float: left;text-align: center;width: 100%;font-size: 12px">
+                <span id="emailCheckNo" style="color:red"></span>
+            </div>
+        </div>
+        </br>
+        <div style="padding-top:30px;">
+            <div style="width: 45%;float:left;text-align: right">
+                <span>学号:</span>
+            </div>
+            <div style="padding-left:20px;width: 50%;float:left;text-align: left">
+                <input style="height: 25px" autocomplete="off" onchange="check('studentId')" onclick="input('studentId')" type="text" id="studentId" placeholder="请输入学号">
+                <span id="studentIdCheckOk" style="color: rgba(26,245,19,0.79)"></span>
+            </div>
+            <div style="float: left;text-align: center;width: 100%;font-size: 12px">
+                <span id="studentIdCheckNo" style="color:red"></span>
+            </div>
+        </div>
+        </br>
+        <div style="padding-top:30px;">
+            <input type="button" value="提交" style="margin-left: 20px" onclick="sub()">
+            <button style="margin-left: 20px" type="reset">重置</button>
+        </div>
+    </fieldset>
+</form>
+</body>
+<script>
+    let userName = false;
+    let email = false;
+    let studentId = false;
+    function input(id) {
+        if(id == 'userName'){
+            if(userName == false){
+                document.getElementById(id+"CheckNo").innerText = "用户名必须为英文和数字的组合，且长度大于6位";
+                document.getElementById(id+"CheckOk").innerText = "";
+            }
+        }else if(id == 'email'){
+            if(email == false){
+                document.getElementById(id+"CheckNo").innerText = "电子邮箱格式必须正确,如:abc@12.com";
+                document.getElementById(id+"CheckOk").innerText = "";
+            }
+        }else {
+            if(studentId == false){
+                document.getElementById(id+"CheckNo").innerText = "学号必须为数字，长度大于6";
+                document.getElementById(id+"CheckOk").innerText = "";
+            }
+        }
+    }
+
+    function check(id) {
+        if(id == 'userName'){
+            let reg = /(?!^\d+$)(?!^[a-zA-Z]+$)[0-9a-zA-Z]{7,}/;
+            let value = document.getElementById(id).value;
+            if(reg.test(value)){
+                document.getElementById(id+'CheckOk').innerText = '√';
+                document.getElementById(id+'CheckNo').innerText = '';
+                userName = true;
+            }else {
+                document.getElementById(id+'CheckOk').innerText = '';
+                document.getElementById(id+'CheckNo').innerText = '用户名必须为英文和数字的组合，且长度大于6位';
+                userName = false;
+            }
+        }else if(id == 'email'){
+            let reg = /^[0-9a-zA-Z]+@[0-9a-zA-Z]+(\.[a-zA-Z]+)$/;
+            let value = document.getElementById(id).value;
+            if(reg.test(value)){
+                document.getElementById(id+'CheckOk').innerText = '√';
+                document.getElementById(id+'CheckNo').innerText = '';
+                email = true;
+            }else {
+                document.getElementById(id+'CheckOk').innerText = '';
+                document.getElementById(id+'CheckNo').innerText = '电子邮箱格式必须正确,如:abc@12.com';
+                email = false;
+            }
+        }else {
+            let reg = /^[0-9]{7,}$/;
+            let value = document.getElementById(id).value;
+            if(reg.test(value)){
+                document.getElementById(id+'CheckOk').innerText = '√';
+                document.getElementById(id+'CheckNo').innerText = '';
+                studentId = true;
+            }else {
+                document.getElementById(id+'CheckOk').innerText = '';
+                document.getElementById(id+'CheckNo').innerText = '学号必须为数字，长度大于6';
+                studentId = false;
+            }
+        }
+    }
+
+    function sub(){
+        if(userName&&email&&studentId){
+            alert("注册成功!");
+            location.reload();
+        }else {
+            alert("信息不能为空");
+        }
+    }
+</script>
+</html>
