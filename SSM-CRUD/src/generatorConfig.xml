@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--
+        targetRuntime：设置自动生成的版本
+        Mybatis3：生成复杂的查询和一些冗余的代码，不建议使用
+        Mybatis3Simple ：简单的增删改查  一般使用这个
+    -->
+    <context id="DB2Tables" targetRuntime="Mybatis3Simple">
+
+        <!-- 不要生成时间和日期-->
+        <commentGenerator>
+            <property name="suppressDate" value="true"></property>
+            <property name="suppressAllComments" value="true"></property>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://localhost:3306/ssm?characterEncoding=utf-8"
+            userId="root"
+            password="scsf_Y5L">
+        </jdbcConnection>
+
+        <!--
+            配置domain生成策略
+            targetProject：把自动生成的domain放到那个工程里面
+            targetPackage：放在那个包下
+        -->
+        <javaModelGenerator targetPackage="com.cprack.domain" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--
+            配置mapper.xml生成策略
+            targetProject：把自动生成的mapper放到那个工程里面
+            targetPackage：放在那个包下
+        -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--mapper接口生成策略-->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.cprack.dao"
+                             targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--根据表生成domain-->
+        <!--table指定每个表的生成策略-->
+        <table tableName="staff" domainObjectName="Employee"/>
+        <table tableName="department" domainObjectName="Department"/>
+    </context>
+</generatorConfiguration>

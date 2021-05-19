@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cprack.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.cprack.domain.Employee">
+    <id column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="staff_gender" jdbcType="VARCHAR" property="staffGender" />
+    <result column="staff_email" jdbcType="VARCHAR" property="staffEmail" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <association property="department" javaType="com.cprack.domain.Department">
+      <id column="department_id" property="departmentId"/>
+      <id column="department_name" property="departmentName"/>
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteStaffsByStaffName" parameterType="java.lang.String">
+    delete from staff
+    where staff_name in
+    <foreach item="staffName" collection="array" open="(" separator="," close=")">
+      #{staffName,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.cprack.domain.Employee" useGeneratedKeys="true" keyProperty="staffId">
+    insert into staff (staff_id, staff_name, staff_gender, staff_email, gid)
+    values (#{staffId,jdbcType=INTEGER}, #{staffName,jdbcType=VARCHAR}, #{staffGender,jdbcType=VARCHAR},
+    #{staffEmail,jdbcType=VARCHAR}, #{gid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cprack.domain.Employee">
+    update staff
+    set staff_name = #{staffName,jdbcType=VARCHAR},
+      staff_gender = #{staffGender,jdbcType=VARCHAR},
+      staff_email = #{staffEmail,jdbcType=VARCHAR},
+      gid = #{gid,jdbcType=INTEGER}
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByStaffName" parameterType="com.cprack.domain.Employee">
+    update staff
+    set staff_name = #{staffName,jdbcType=VARCHAR},
+      staff_gender = #{staffGender,jdbcType=VARCHAR},
+      staff_email = #{staffEmail,jdbcType=VARCHAR},
+      gid = #{gid,jdbcType=INTEGER}
+    where staff_name = #{staffName,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select staff_id, staff_name, staff_gender, staff_email, gid
+    from staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByStaffName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select staff_id, staff_name
+    from staff
+    where staff_name = #{staffName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectEmailByStaffName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select staff_email
+    from staff
+    where staff_name = #{staffName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select staff_id, staff_name, staff_gender, staff_email, gid
+    from staff order by staff_id
+  </select>
+  <select id="selectByPrimaryKeyWithDepartment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select staff_id, staff_name, staff_gender, staff_email, gid, department_id, department_name
+    from staff left join department on staff.gid=department.department_id
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllWithDepartment" resultMap="BaseResultMap">
+    select staff_id, staff_name, staff_gender, staff_email, gid, department_id, department_name
+    from staff left join department on staff.gid=department.department_id order by staff_id
+  </select>
+</mapper>
